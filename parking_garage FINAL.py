@@ -1,8 +1,13 @@
-import datetime
 import time
 from math import floor
 
 class Parking_Garage():
+    """
+        A parking garage class comprised of methods to take a ticket, pay a ticket, and leave the garage.
+        Imports time in order to time stamp tickets.
+        Imports floor from math to format time stamp into whole integers.
+        Uses run() in order to allow the user access to the class and its methods paired with user responses.
+    """
 
     def __init__(self):
         self.tickets = ["1","2","3","4","5","6","7","8","9","10"]
@@ -28,7 +33,7 @@ class Parking_Garage():
                 break
 
     def leave_garage(self):
-        ticket_number = input("What is your ticket number? ")
+        ticket_number = input("\nWhat is your ticket number? ")
         if ticket_number in self.current_ticket.keys():
             print("Ticket Verified")
             if self.current_ticket[ticket_number] == 'unpaid':
@@ -36,13 +41,13 @@ class Parking_Garage():
                 self.pay_ticket(ticket_number)
             if self.current_ticket[ticket_number] == 'paid':
                 self.tickets.append(ticket_number)
-                self.spaces.append(ticket_number)
+                self.spaces.append(int(ticket_number))
                 del self.current_ticket[ticket_number]
                 del self.current_ticket[int(ticket_number)]
                 print("Thank you. Have a nice day.")
                 
         else:
-            response = input("That is not a valid ticket number...Do you have a ticket? y/n.")
+            response = input("\nThat is not a valid ticket number...Do you have a ticket? y/n.")
             if response.lower().strip() == 'y':
                 self.leave_garage()
             else:
@@ -50,8 +55,8 @@ class Parking_Garage():
 
     def pay_ticket(self, ticket_number = None):
         if ticket_number == None:
-                ticket_number = input("What is your ticket number? ")
-        if ticket_number in self.current_ticket.keys():
+                ticket_number = input("\nWhat is your ticket number? ")
+        if ticket_number.strip() in self.current_ticket.keys():
             print("Ticket Verified")
             end_t = time.time()
             self.current_ticket[int(ticket_number)] -= end_t
@@ -62,16 +67,18 @@ class Parking_Garage():
                 cost = '$20'
             else:
                 cost = '$30'
-            paid = input(f"You stayed {floor(stay_duration)} seconds. Please enter {cost} to pay for ticket. ")
-            if paid.strip() == cost:
-                self.current_ticket[ticket_number] = 'paid'
-                print("Your ticket has been paid please leave in 15 mins")
+            while True:
+                paid = input(f"\nYou stayed {floor(stay_duration)} seconds. Please enter {cost} to pay for ticket. ")
+                if paid.strip() == cost:
+                    self.current_ticket[ticket_number] = 'paid'
+                    print("Your ticket has been paid please leave in 15 mins")
+                    break
 
-            else:
-                print(f"Invalid attempt, please enter {cost} to pay for ticket.")
-                self.pay_ticket()
+                else:
+                    print(f"Invalid attempt, please enter {cost} to pay for ticket.")
+                    continue
         else:
-            response = input("That is not a valid ticket number...Do you have a ticket? y/n.")
+            response = input("\nThat is not a valid ticket number...Do you have a ticket? y/n.")
             if response.lower().strip() == 'y':
                 self.pay_ticket()
             else:
@@ -81,9 +88,9 @@ class Parking_Garage():
 a_n_d_parking = Parking_Garage()        
 
 def run():
-    print("Welcome to our parking garage! ")
+    print("\nWelcome to A n' D parking garage! ")
 
-    home = "\nWhat do you want to do? Take Ticket / Pay Ticket / Leave Garage / Quit: "
+    home = "\nSelect one: Take Ticket / Pay Ticket / Leave Garage / Quit: "
     while True:
         response = input(home)
         if response.lower().strip() == 'take ticket':
